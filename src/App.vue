@@ -45,12 +45,12 @@ export default {
   data() {
     return {
       genres: [
-        { name: "Electronic", displayName: "Electrônica", active: false },
-        { name: "Jazzblues", displayName: "Jazzblues", active: false },
-        { name: "Metal", displayName: "Metal", active: false },
-        { name: "Pop", displayName: "Pop", active: false },
-        { name: "Reggae", displayName: "Reggae", active: false },
-        { name: "Rock", displayName: "Rock", active: false }
+        { name: "electronic", displayName: "Electrônica", active: true },
+        { name: "jazzblues", displayName: "Jazzblues", active: false },
+        { name: "metal", displayName: "Metal", active: false },
+        { name: "pop", displayName: "Pop", active: false },
+        { name: "reggae", displayName: "Reggae", active: false },
+        { name: "rock", displayName: "Rock", active: false }
       ]
     };
   },
@@ -60,7 +60,8 @@ export default {
         (genre, index) =>
           index === genreIndex ? (genre.active = true) : (genre.active = false)
       );
-      console.log(genre)
+      this.$store.dispatch('clearTracks');
+      this.$store.dispatch('getTracks', { genre, page: 1 })
     }
   },
   components: {
@@ -81,6 +82,7 @@ export default {
     padding-top: 20px;
     color: #7d7e7f;
     background-color: #1d1e1f;
+    margin-bottom: 40px;
 
     .breadcrumb {
       background-color: transparent !important;
