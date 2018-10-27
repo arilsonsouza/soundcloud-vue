@@ -1,0 +1,23 @@
+// Import custom font from Google
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+$base-background-color: #262628;
+$base-font-color: #aaabac !default;
+$base-font-family:'Raleway', sans-serif;
+$base-font-size: 14px !default;
+$base-line-height: 20px !default;
+
+// Override fonts
+$font-family-sans-serif: $base-font-family;
+$font-family-serif: Georgia, 'Times New Roman', Times, serif;
+$font-family-monospace: Menlo, Monaco, Consolas, 'Liberation Mono',
+  'Courier New', monospace;
+$font-family-base: $font-family-sans-serif;
+
+// Set global options
+$enable-shadows: false;
+$enable-gradients: true;
+
+$body-bg: $base-background-color;
+$body-color: $base-font-color;
+$header-background-color: #262728;

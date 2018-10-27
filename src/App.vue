@@ -1,17 +1,136 @@
 <template>
   <div id="app">
-    
-    <router-view/>
+
+    <navbar/>
+
+    <main role="main" class="main-content">
+        <div class="container-fluid">
+          <div class="row">
+            <header class="header-content">
+                <div class="container">
+                  <div class="row justify-content-between">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb d-flex justify-content-md-between justify-content-sm-center">
+                          <li :class="{ 'breadcrumb-item active': genre.active, 'breadcrumb-item': !genre.active }" aria-current="page"
+                                v-for="(genre, index) in genres" :key="index" @click="getGenreItems(genre.name, index)">
+                                {{ genre.displayName }}
+                          </li>
+                        </ol>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+            </header>
+          </div>
+          
+          <div class="row">
+            <div class="container">
+              <router-view/>
+            </div>
+          </div>
+
+        </div>
+    </main>
+
   </div>
 </template>
 
 <script>
+import Navbar from "@/components/Navbar";
+
 export default {
-  name: 'App'
-}
+  name: "App",
+
+  data() {
+    return {
+      genres: [
+        { name: "Electronic", displayName: "Electrônica", active: false },
+        { name: "Jazzblues", displayName: "Jazzblues", active: false },
+        { name: "Metal", displayName: "Metal", active: false },
+        { name: "Pop", displayName: "Pop", active: false },
+        { name: "Reggae", displayName: "Reggae", active: false },
+        { name: "Rock", displayName: "Rock", active: false }
+      ]
+    };
+  },
+  methods: {
+    getGenreItems(genre, genreIndex) {
+      this.genres.forEach(
+        (genre, index) =>
+          index === genreIndex ? (genre.active = true) : (genre.active = false)
+      );
+      console.log(genre)
+    }
+  },
+  components: {
+    Navbar
+  }
+};
 </script>
 
 <style lang="scss">
-@import './assets/stylesheets/custom-bootstrap.scss';
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import "styles/scss/_variables.scss";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+.main-content {
+  margin-top: 76px;
+
+  .header-content {
+    width: 100%;
+    padding-top: 20px;
+    color: #7d7e7f;
+    background-color: #1d1e1f;
+
+    .breadcrumb {
+      background-color: transparent !important;
+
+      .breadcrumb-item {
+        cursor: pointer;
+        display: flex;
+      }
+      .breadcrumb-item.active {
+        color: #aaabac !important;
+        border-bottom: 1px solid hsla(0, 0%, 100%, 0.05);
+      }
+
+      .breadcrumb-item + .breadcrumb-item {
+        text-align: center;
+        padding-left: 0;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        display: inline-block;
+        padding-right: 0.5rem;
+        color: #6c757d;
+        content: "";
+      }
+
+      .breadcrumb-item + .breadcrumb-item::after {
+        display: inline-block;
+        padding-right: 0.5rem;
+        content: "";
+      }
+    }
+  }
+}
+
+.btn,
+.btn:focus {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  overflow: hidden;
+  -webkit-transform: translate(0);
+  transform: translate(0);
+  background: transparent;
+}
+.icon {
+  width: 36px;
+  height: 18px;
+  fill: $base-font-color;
+}
 </style>
