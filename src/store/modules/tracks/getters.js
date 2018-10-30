@@ -11,4 +11,6 @@ export default {
     indexOfCurrentTrack: state => state.indexOfCurrentTrack,
     nextTrack: state => state.nextTrack,
     prevTrack: state => state.prevTrack,
+    searchQuery: state => state.searchQuery,
+    audio: state => state.audio
 }

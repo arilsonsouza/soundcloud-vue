@@ -72,7 +72,6 @@ export default {
   data() {
     return {
       clientId: process.env.CLIENT_ID,
-      audio: null,
       isPlaying: false,
       currentTime: null,
       isPlaying: true,
@@ -90,7 +89,8 @@ export default {
       barCompleted: "barCompleted",
       indexOfCurrentTrack: "indexOfCurrentTrack",
       nextTrack: "nextTrack",
-      prevTrack: "prevTrack"
+      prevTrack: "prevTrack",
+      audio: "audio"
     })
   },
 
@@ -207,11 +207,11 @@ export default {
     currentTrack() {
       if (this.audio) {
         this.audio.pause();
-        this.audio = null;
+        this.$store.dispatch('setAudio', null)
       }
-      this.audio = new Audio(
-        `${this.currentTrack.stream_url}?client_id=${this.clientId}`
-      );
+
+      this.$store.dispatch('setAudio', { url: `${this.currentTrack.stream_url}?client_id=${this.clientId}`})
+      
 
       this.audio.addEventListener("timeupdate", this.timeUpdate);
       this.audio.addEventListener("ended", this.ended);

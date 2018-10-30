@@ -1,7 +1,7 @@
 <template>
    <div>
         <div class="card">
-            <img class="card-img-top" :src="track.artwork_url" :alt="track.title" :title="track.title">
+            <img class="card-img-top" :src="track.artwork_url ? track.artwork_url : require('../assets/img/noimage.png')" :alt="track.title" :title="track.title">
             <div class="card-track-timeline">
               <!-- <img :src="track.waveform_url" alt="" width="100%" class="waveform"> -->
                 <div class="bar bar-completed" :style="{ width:  (currentTrack && track.id === currentTrack.id) ? barCompleted : '0%' }"></div> 
@@ -69,23 +69,23 @@ export default {
       barCompleted: "barCompleted"
     })
   },
-  watch:{
-    currentTrack(){
-      if(this.track.id == this.currentTrack.id){
-        this.isPlaying = true
-      }else{
-        this.isPlaying = false
+  watch: {
+    currentTrack() {
+      if (this.track.id == this.currentTrack.id) {
+        this.isPlaying = true;
+      } else {
+        this.isPlaying = false;
       }
-
     }
   },
   methods: {
     handlePlay() {
       if (this.isPlaying) {
         this.isPlaying = false;
+        this.$store.dispatch("setAudio", null);
         this.$store.dispatch("setCurrentTrack", {
           track: null,
-          index:null
+          index: null
         });
       } else {
         this.$store.dispatch("setCurrentTrack", {

@@ -15,6 +15,7 @@ const defaultState = {
     prevTrack: null,
     barBuffered: null,
     barCompleted: null,
+    audio: null
 }
 
 export default {

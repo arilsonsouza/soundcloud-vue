@@ -28,7 +28,7 @@
               <div class="col-sm-10 col-md-10 col-lg-10">
                 <div class="collapse search-bar" id="collapseExample">
                    <form @submit.prevent="handleSearch" class="search-form">
-                       <input v-model="query" type="text" autocomplete="off" class="search-form-input form-control" maxlength="60" placeholder="Pesquisar..." tabindex="0">
+                       <input autofocus v-model="query" type="text" autocomplete="off" class="search-form-input form-control"  placeholder="Pesquisar..." tabindex="0">
                    </form>
                 </div>
               </div>
@@ -40,16 +40,21 @@
 <script>
 export default {
   name: "Navbar",
-  data(){
-    return{
-      query: ''
-    }
+  data() {
+    return {
+      query: ""
+    };
   },
 
-  methods:{
-    handleSearch(){
-      const query = this.query
-      this.$router.push({ path: 'search',  query: { q: query } })
+  methods: {
+    handleSearch() {
+      const query = this.query;
+      this.$store.dispatch("clearTracks");
+      this.$store.dispatch("setCurrentTrack", {
+        track: null,
+        index: null
+      })
+      this.$router.push({ name: "search", params: { query: query } });
     }
   }
 };

@@ -9,7 +9,7 @@ export default {
             query:{
                 linked_partitioning: page,
                 limit: 40,
-                offset: 20 * (page - 1),
+                offset: 40 * (page - 1),
                 tags: genre
             }
         }).then(data => {
@@ -18,6 +18,29 @@ export default {
             console.log(error)
             context.commit('GET_TRACKS_FAIL', error)
         })
+    },
+    searchTracks: (context, { query, page}) => {
+        context.commit('GET_TRACKS', true)
+        API.get({
+            url: 'tracks',
+            query:{
+                linked_partitioning: page,
+                limit: 40,
+                offset: 40 * (page - 1),
+                q: query
+            }
+        }).then(data => {
+            context.commit('GET_TRACKS_SUCCESS', data)
+        }).catch(error => {
+            console.log(error)
+            context.commit('GET_TRACKS_FAIL', error)
+        })
+    },
+
+    setSearchQuery: (context, data) => {
+        context.commit('SET_SEARCH_QUERY', data.query)
+        context.dispatch('clearTracks')
+        context.dispatch("searchTracks", { query: data.query, page: 1 });
     },
 
     clearTracks: (context) => {
@@ -41,4 +64,8 @@ export default {
     setBarCompleted: (context, percent) => {
         context.commit('SET_BAR_COMPLETED', percent)
     },
+
+    setAudio: (context, data) => {
+        context.commit('SET_AUDIO', data)
+    }
 }

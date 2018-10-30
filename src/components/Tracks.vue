@@ -18,7 +18,7 @@
 <script>
 import { mapGetters } from "vuex";
 import TrackCard from "./TrackCard";
-import Player from './Player'
+import Player from "./Player";
 
 export default {
   name: "Tracks",
@@ -37,7 +37,8 @@ export default {
       getTracksFail: "getTracksFail",
       activeGenre: "activeGenre",
       searchQuery: "searchQuery",
-      lastPage: "lastPage"
+      lastPage: "lastPage",
+      searchQuery: "searchQuery"
     })
   },
 
@@ -58,6 +59,8 @@ export default {
       if (bottomOfWindow && !this.getTracksLoading) {
         if (this.page === "home") {
           this.$store.dispatch("getTracks", { genre: this.activeGenre, page });
+        } else {
+          this.$store.dispatch("searchTracks", { query: this.searchQuery, page });
         }
         this.currentPage = page;
       }
@@ -102,7 +105,7 @@ export default {
 }
 .loader:before,
 .loader:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
 }
@@ -134,5 +137,4 @@ export default {
     box-shadow: 0 2.5em 0 0;
   }
 }
-
 </style>

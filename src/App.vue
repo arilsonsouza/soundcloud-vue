@@ -13,8 +13,8 @@
                       <nav aria-label="breadcrumb">
                         <ol class="breadcrumb d-flex justify-content-md-between justify-content-sm-center">
                           <li :class="{ 'breadcrumb-item active': genre.active, 'breadcrumb-item': !genre.active }" aria-current="page"
-                                v-for="(genre, index) in genres" :key="index" @click="getGenreItems(genre.name, index)">
-                                {{ genre.displayName }}
+                                v-for="(genre, index) in genres" :key="index" >
+                                <router-link :to="{ name: 'home', params:{ genre: genre.name} }">{{ genre.displayName }}</router-link>
                           </li>
                         </ol>
                       </nav>
@@ -51,8 +51,20 @@ export default {
         { name: "pop", displayName: "Pop", active: false },
         { name: "reggae", displayName: "Reggae", active: false },
         { name: "rock", displayName: "Rock", active: false }
-      ]
+      ],
     };
+  },
+
+  watch: {
+    "$route.params.genre"() {
+      const genreParam = this.$route.params.genre
+
+      const index = this.genres.findIndex(genre => genre.name === genreParam);
+      this.getGenreItems(genreParam, index)
+    }
+  },
+  mounted(){
+    console.log(this.$route.query.q)
   },
   methods: {
     getGenreItems(genre, genreIndex) {
@@ -62,7 +74,7 @@ export default {
       );
       this.$store.dispatch("clearTracks");
       this.$store.dispatch("getTracks", { genre, page: 1 });
-      this.$store.dispatch('setIndexOfCurrentTrack', 0)
+      this.$store.dispatch("setIndexOfCurrentTrack", 0);
     }
   },
   components: {
@@ -91,6 +103,11 @@ export default {
       .breadcrumb-item {
         cursor: pointer;
         display: flex;
+
+        a {
+          text-decoration: none;
+          color: #7d7e7f;
+        }
       }
       .breadcrumb-item.active {
         color: #aaabac !important;

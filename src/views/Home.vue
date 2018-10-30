@@ -1,31 +1,40 @@
 <template>
     <div>
-        <tracks :page='page'/>
+        <tracks page='home'/>
     </div>
 </template>
 
 <script>
-import Tracks from '@/components/Tracks'
+import Tracks from "@/components/Tracks";
 
-    export default {
-        name: 'Home',
+export default {
+  name: "Home",
+  mounted() {
+    const genre = this.$route.params.genre || "electronic";
+    this.$store.dispatch("getTracks", { genre, page: 1 });
+  },
 
-        data(){
-            return {
-                page: 'home',
-            }
-        },
-
-        mounted(){
-            this.$store.dispatch('getTracks', { genre: 'electronic', page: 1 })
-        },
-
-        components:{
-            Tracks
-        }
+  watch: {
+    "$route.params.genre"() {
+      const genre = this.$route.params.genre || "electronic";
+      this.$store.dispatch("getTracks", { genre, page: 1 });
     }
+  },
+
+  destroyed() {
+    this.$store.dispatch("clearTracks");
+    this.$store.dispatch("setAudio", null);
+    this.$store.dispatch("setCurrentTrack", {
+      track: null,
+      index: null
+    });
+  },
+
+  components: {
+    Tracks
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

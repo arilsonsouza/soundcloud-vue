@@ -13,6 +13,10 @@ export default {
 
     },
 
+    SET_SEARCH_QUERY: (state, data) => {
+        state.searchQuery = data
+    },
+
     CLEAR_TRACKS: (state) => {
         state.getTracksLoading = false
         state.tracks = []
@@ -50,5 +54,16 @@ export default {
     SET_BAR_COMPLETED: (state, data) => {
         state.barCompleted = data
     },
+
+    SET_AUDIO: (state, data) => {
+        if (data) {
+            state.audio = new Audio(data.url)
+        } else {
+            if (state.audio) {
+                state.audio.pause()
+                state.audio = null
+            }
+        }
+    }
 
 }
