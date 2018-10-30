@@ -25,7 +25,6 @@ export default {
     }
   },
   destroyed() {
-    console.log("search destroyed");
     this.$store.dispatch("clearTracks");
     this.$store.dispatch("setAudio", null);
     this.$store.dispatch("setCurrentTrack", {

@@ -56,8 +56,9 @@
                     </svg>
 
                 </button>
-                <div class="volume-bar-container" @click="seekVolume">
-                    <div class="volume-bar" :style="{ width: !isMuted ? volumeBar : '0%' }"></div>
+                <div class="volume-bar-container">
+                    <!-- <div class="volume-bar" :style="{ width: !isMuted ? volumeBar : '0%' }"></div> -->
+                    <input type="range" v-model="volume" step="0.25" max="1" min="0" @change="seekVolume">
                 </div>
             </div>
         </div>
@@ -77,7 +78,8 @@ export default {
       isPlaying: true,
       timeline: null,
       isMuted: false,
-      volumeBar: "100%"
+      volumeBar: "100%",
+      volume: 1
     };
   },
 
@@ -123,8 +125,8 @@ export default {
           index: 0
         });
       }
+      this.volume = 1
       this.currentTime = "00:00";
-      this.setVolumeBar(1);
       this.$store.dispatch("setBarCompleted", `0%`);
     },
 
@@ -149,29 +151,16 @@ export default {
       if (!this.audio.muted) {
         this.audio.muted = true;
         this.isMuted = true;
-        this.setVolumeBar(0);
+        this.volume = 0;
       } else {
         this.audio.muted = false;
         this.isMuted = false;
+        this.volume = this.audio.volume;
       }
     },
 
-    seekVolume(e) {
-      const mouseX = e.offsetX;
-      let width = window
-        .getComputedStyle(e.srcElement)
-        .getPropertyValue("width");
-      width = parseFloat(width.substr(0, width.length - 2));
-      const nextSeek = mouseX / width;
-      this.audio.volume = nextSeek;
-    },
-
-    setVolumeBar(width) {
-      this.volumeBar = `${width * 100}%`;
-    },
-
-    volumeChange() {
-      this.setVolumeBar(this.audio.volume);
+    seekVolume() {
+      this.audio.volume = this.volume;
     },
 
     setNextTrack() {},
@@ -204,14 +193,23 @@ export default {
       this.changeindexOfCurrentTrack();
     },
 
+    volume(){
+      if(this.volume == 0){
+        this.isMuted = true
+      }else{
+        this.isMuted = false
+      }
+    },
+
     currentTrack() {
       if (this.audio) {
         this.audio.pause();
-        this.$store.dispatch('setAudio', null)
+        this.$store.dispatch("setAudio", null);
       }
 
-      this.$store.dispatch('setAudio', { url: `${this.currentTrack.stream_url}?client_id=${this.clientId}`})
-      
+      this.$store.dispatch("setAudio", {
+        url: `${this.currentTrack.stream_url}?client_id=${this.clientId}`
+      });
 
       this.audio.addEventListener("timeupdate", this.timeUpdate);
       this.audio.addEventListener("ended", this.ended);
@@ -333,19 +331,29 @@ export default {
       align-items: center;
 
       .volume-bar-container {
-        height: 4px;
+        // height: 4px;
         width: 100%;
-        background-color: #3a3b3c;
-        cursor: pointer;
-        position: relative;
-        .volume-bar {
-          position: absolute;
-          height: inherit;
-          background-color: #506f43;
-          transition: width 0.5s;
-        }
+        display: flex;
+        align-items: center;
+        // background-color: #3a3b3c;
       }
     }
   }
+
+  input[type=range]::-ms-track {
+    width: 300px;
+    height: 5px;
+    
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent;
+    
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+
+    /*remove default tick marks*/
+    color: transparent;
+}
+
 }
 </style>

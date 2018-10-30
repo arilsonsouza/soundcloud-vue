@@ -14,7 +14,7 @@
                         <ol class="breadcrumb d-flex justify-content-md-between justify-content-sm-center">
                           <li :class="{ 'breadcrumb-item active': genre.active, 'breadcrumb-item': !genre.active }" aria-current="page"
                                 v-for="(genre, index) in genres" :key="index" >
-                                <router-link :to="{ name: 'home', params:{ genre: genre.name} }">{{ genre.displayName }}</router-link>
+                                <router-link :to="{ name: 'home', query:{ genre: genre.name} }">{{ genre.displayName }}</router-link>
                           </li>
                         </ol>
                       </nav>
@@ -51,20 +51,17 @@ export default {
         { name: "pop", displayName: "Pop", active: false },
         { name: "reggae", displayName: "Reggae", active: false },
         { name: "rock", displayName: "Rock", active: false }
-      ],
+      ]
     };
   },
 
   watch: {
-    "$route.params.genre"() {
-      const genreParam = this.$route.params.genre
+    "$route.query.genre"() {
+      const genreParam = this.$route.query.genre;
 
       const index = this.genres.findIndex(genre => genre.name === genreParam);
-      this.getGenreItems(genreParam, index)
+      this.getGenreItems(genreParam, index);
     }
-  },
-  mounted(){
-    console.log(this.$route.query.q)
   },
   methods: {
     getGenreItems(genre, genreIndex) {
@@ -162,6 +159,47 @@ export default {
 }
 
 .bar-buffered {
+  background-color: #506f43;
+}
+input[type="range"] {
+  overflow: hidden;
+  width: 100%;
+  -webkit-appearance: none;
+  background-color: #6c757d;
+  height: 4px;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+  -webkit-appearance: none;
+  color: #506f43;
+  margin-top: -1px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background: #506f43;
+  box-shadow: -90px 0 0 89px #506f43;
+}
+
+/** FF*/
+input[type="range"]::-moz-range-progress {
+  background-color: #506f43;
+}
+input[type="range"]::-moz-range-track {
+  background-color: #506f43;
+}
+/* IE*/
+input[type="range"]::-ms-fill-lower {
+  background-color: #506f43;
+}
+input[type="range"]::-ms-fill-upper {
   background-color: #506f43;
 }
 </style>

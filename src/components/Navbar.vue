@@ -29,6 +29,7 @@
                 <div class="collapse search-bar" id="collapseExample">
                    <form @submit.prevent="handleSearch" class="search-form">
                        <input autofocus v-model="query" type="text" autocomplete="off" class="search-form-input form-control"  placeholder="Pesquisar..." tabindex="0">
+                      <span v-if="showMessage">Pesquisa inválida</span>
                    </form>
                 </div>
               </div>
@@ -38,23 +39,36 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Navbar",
   data() {
     return {
-      query: ""
+      query: null,
+      showMessage: false
     };
   },
 
+  computed: {
+    ...mapGetters({
+      searchQuery: "searchQuery"
+    })
+  },
   methods: {
     handleSearch() {
-      const query = this.query;
-      this.$store.dispatch("clearTracks");
-      this.$store.dispatch("setCurrentTrack", {
-        track: null,
-        index: null
-      })
-      this.$router.push({ name: "search", params: { query: query } });
+      if (this.query && this.query !== this.searchQuery) {
+        this.showMessage = false;
+        const query = this.query;
+        this.$store.dispatch("clearTracks");
+        this.$store.dispatch("setCurrentTrack", {
+          track: null,
+          index: null
+        });
+        this.$router.push({ name: "search", params: { query: query } });
+        this.query = null;
+      } else if(!this.query) {
+        this.showMessage = true;
+      }
     }
   }
 };

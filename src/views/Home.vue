@@ -10,13 +10,14 @@ import Tracks from "@/components/Tracks";
 export default {
   name: "Home",
   mounted() {
-    const genre = this.$route.params.genre || "electronic";
+    const genre = this.$route.query.genre || "electronic";
+    console.log('mouten', genre)
     this.$store.dispatch("getTracks", { genre, page: 1 });
   },
 
   watch: {
     "$route.params.genre"() {
-      const genre = this.$route.params.genre || "electronic";
+      const genre = this.$route.query.genre || "electronic";
       this.$store.dispatch("getTracks", { genre, page: 1 });
     }
   },
