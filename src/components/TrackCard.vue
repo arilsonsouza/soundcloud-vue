@@ -3,7 +3,10 @@
         <div class="card">
             <img class="card-img-top" :src="track.artwork_url" :alt="track.title" :title="track.title">
             <div class="card-track-timeline">
-                
+              <!-- <img :src="track.waveform_url" alt="" width="100%" class="waveform"> -->
+                <div class="bar bar-completed" :style="{ width:  (currentTrack && track.id === currentTrack.id) ? barCompleted : '0%' }"></div> 
+              <div class="waveform" :style="`-webkit-mask-box-image: url(${track.waveform_url})`"></div>
+                <!-- <div class="bar bar-buffered" :style="{}"></div>-->
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{ track.user.username }}</h5>
@@ -12,11 +15,17 @@
             <div class="card-footer">
                 <div class="card-track-actions">
                     <div class="column">
-                        <button class="btn btn-icon" id="btnPlay">
-                            <svg id="icon-play" viewBox="0 0 24 24" width="100%" height="100%">
+                        <button class="btn btn-icon" id="btnPlay" @click="handlePlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" v-if="isPlaying">
+                              <path d="M0 0h24v24H0z" fill="none"/>
+                              <path d="M6 6h12v12H6z"/>
+                            </svg>
+
+                            <svg id="icon-play" viewBox="0 0 24 24" width="100%" height="100%" v-else>
                                 <path d="M8 5v14l11-7z"></path>
                                 <path d="M0 0h24v24H0z" fill="none"></path>
                             </svg>
+                            
                         </button>
                         <span class="card-track-duration">{{ track.duration | secondsToTime }}</span>
                     </div>
@@ -44,9 +53,53 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "TrackCard",
-  props: ["track"]
+  props: ["track", "index"],
+  data() {
+    return {
+      isPlaying: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      currentTrack: "currentTrack",
+      barBuffered: "barBuffered",
+      barCompleted: "barCompleted"
+    })
+  },
+  watch:{
+    currentTrack(){
+      if(this.track.id == this.currentTrack.id){
+        this.isPlaying = true
+      }else{
+        this.isPlaying = false
+      }
+
+    }
+  },
+  methods: {
+    handlePlay() {
+      if (this.isPlaying) {
+        this.isPlaying = false;
+        this.$store.dispatch("setCurrentTrack", {
+          track: null,
+          index:null
+        });
+      } else {
+        this.$store.dispatch("setCurrentTrack", {
+          track: this.track,
+          index: this.index
+        });
+
+        this.isPlaying = true;
+
+        this.$store.dispatch("setNextTrack");
+        this.$store.dispatch("setPrevTrack");
+      }
+    }
+  }
 };
 </script>
 
@@ -101,8 +154,15 @@ export default {
 
   .card-track-timeline {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    height: 9px;
+    height: 40px;
     background: #171819;
+    // padding: 5px;
+    .waveform {
+      background: #1d1e1f; /*#262628;*/
+      width: 100%;
+      height: inherit;
+      position: absolute;
+    }
   }
 
   .card-footer {

@@ -13,7 +13,6 @@ export default {
                 tags: genre
             }
         }).then(data => {
-            console.log(data)
             context.commit('GET_TRACKS_SUCCESS', data)
         }).catch(error => {
             console.log(error)
@@ -24,5 +23,22 @@ export default {
     clearTracks: (context) => {
         context.commit('GET_TRACKS', true)
         context.commit('CLEAR_TRACKS')
-    }
+    },
+
+    setCurrentTrack: (context, data) => {
+        context.commit('SET_CURRENT_TRACK', data)
+    },
+
+    setIndexOfCurrentTrack: (context, data) => {
+        context.commit('SET_INDEX_OF_CURRENT_TRACK', data)
+    },
+    setNextTrack: (context) => {
+        context.commit('SET_NEXT_TRACK')
+    },
+    setPrevTrack: (context) => {
+        context.commit('SET_PREV_TRACK')
+    },
+    setBarCompleted: (context, percent) => {
+        context.commit('SET_BAR_COMPLETED', percent)
+    },
 }

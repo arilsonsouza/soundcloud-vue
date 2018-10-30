@@ -60,8 +60,9 @@ export default {
         (genre, index) =>
           index === genreIndex ? (genre.active = true) : (genre.active = false)
       );
-      this.$store.dispatch('clearTracks');
-      this.$store.dispatch('getTracks', { genre, page: 1 })
+      this.$store.dispatch("clearTracks");
+      this.$store.dispatch("getTracks", { genre, page: 1 });
+      this.$store.dispatch('setIndexOfCurrentTrack', 0)
     }
   },
   components: {
@@ -134,5 +135,16 @@ export default {
   width: 36px;
   height: 18px;
   fill: $base-font-color;
+}
+
+.bar {
+  position: absolute;
+  height: inherit;
+  background-color: #506f43;
+  transition: width 0.5s;
+}
+
+.bar-buffered {
+  background-color: #506f43;
 }
 </style>

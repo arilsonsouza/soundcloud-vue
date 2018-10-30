@@ -1,5 +1,5 @@
 import axios from 'axios'
-const clientId = 'a281614d7f34dc30b665dfcaa3ed7505'
+const clientId = process.env.CLIENT_ID
 
 const formatParams = (params) => {
     return `?client_id=${clientId}&` + Object.keys(params).map(key => `${key}=${params[key]}`).join('&')

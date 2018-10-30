@@ -8,7 +8,13 @@ const defaultState = {
     getTracksFail: null,
     activeGenre: null,
     searchQuery: null,
-    lastPage: null
+    lastPage: null,
+    currentTrack: null,
+    indexOfCurrentTrack: null,
+    nextTrack: null,
+    prevTrack: null,
+    barBuffered: null,
+    barCompleted: null,
 }
 
 export default {

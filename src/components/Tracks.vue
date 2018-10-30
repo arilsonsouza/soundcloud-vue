@@ -1,7 +1,7 @@
 <template>
     <div class="row tracks">
         <div class="col-sm-6 col-md-3 col-lg-3" v-for="(track, index) in tracks" :key="index">
-                <track-card :track="track"/>
+                <track-card :track="track" :index="index"/>
         </div>
         <div class="container" v-if="getTracksLoading">
             <div class="row">
@@ -10,12 +10,15 @@
                 </div>
             </div>
         </div>
+
+      <player/>
     </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import TrackCard from "./TrackCard";
+import Player from './Player'
 
 export default {
   name: "Tracks",
@@ -62,7 +65,8 @@ export default {
   },
 
   components: {
-    "track-card": TrackCard
+    "track-card": TrackCard,
+    Player
   }
 };
 </script>
