@@ -55,6 +55,10 @@ export default {
         state.barCompleted = data
     },
 
+    SET_BAR_BUFFERED: (state, data) => {
+        state.barBuffered = data
+    },
+
     SET_AUDIO: (state, data) => {
         if (data) {
             state.audio = new Audio(data.url)

@@ -57,6 +57,7 @@ export default {
   methods: {
     handleSearch() {
       if (this.query && this.query !== this.searchQuery) {
+        this.$store.dispatch("setBarBuffered", `0%`);
         this.showMessage = false;
         const query = this.query;
         this.$store.dispatch("clearTracks");

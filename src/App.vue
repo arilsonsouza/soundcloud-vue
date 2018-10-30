@@ -14,7 +14,7 @@
                         <ol class="breadcrumb d-flex justify-content-md-between justify-content-sm-center">
                           <li :class="{ 'breadcrumb-item active': genre.active, 'breadcrumb-item': !genre.active }" aria-current="page"
                                 v-for="(genre, index) in genres" :key="index" >
-                                <router-link :to="{ name: 'home', query:{ genre: genre.name} }">{{ genre.displayName }}</router-link>
+                                <router-link :to="{ name: 'home', query:{ genre: genre.name} }">{{ genre.name }}</router-link>
                           </li>
                         </ol>
                       </nav>
@@ -45,12 +45,12 @@ export default {
   data() {
     return {
       genres: [
-        { name: "electronic", displayName: "Electrônica", active: true },
-        { name: "jazzblues", displayName: "Jazzblues", active: false },
-        { name: "metal", displayName: "Metal", active: false },
-        { name: "pop", displayName: "Pop", active: false },
-        { name: "reggae", displayName: "Reggae", active: false },
-        { name: "rock", displayName: "Rock", active: false }
+        { name: "electronic", active: true },
+        { name: "jazzblues", active: false },
+        { name: "metal", active: false },
+        { name: "pop", active: false },
+        { name: "reggae", active: false },
+        { name: "rock", active: false }
       ]
     };
   },
@@ -100,6 +100,7 @@ export default {
       .breadcrumb-item {
         cursor: pointer;
         display: flex;
+        text-transform: capitalize;
 
         a {
           text-decoration: none;
@@ -109,6 +110,7 @@ export default {
       .breadcrumb-item.active {
         color: #aaabac !important;
         border-bottom: 1px solid hsla(0, 0%, 100%, 0.05);
+
       }
 
       .breadcrumb-item + .breadcrumb-item {
@@ -160,6 +162,7 @@ export default {
 
 .bar-buffered {
   background-color: #506f43;
+  opacity: .5;
 }
 input[type="range"] {
   overflow: hidden;

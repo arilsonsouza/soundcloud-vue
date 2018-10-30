@@ -65,6 +65,10 @@ export default {
         context.commit('SET_BAR_COMPLETED', percent)
     },
 
+    setBarBuffered: (context, percent) => {
+        context.commit('SET_BAR_BUFFERED', percent)
+     },
+
     setAudio: (context, data) => {
         context.commit('SET_AUDIO', data)
     }

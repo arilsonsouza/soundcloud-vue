@@ -5,8 +5,8 @@
             <div class="card-track-timeline">
               <!-- <img :src="track.waveform_url" alt="" width="100%" class="waveform"> -->
                 <div class="bar bar-completed" :style="{ width:  (currentTrack && track.id === currentTrack.id) ? barCompleted : '0%' }"></div> 
+                <div class="bar bar-buffered" :style="{ width:  (currentTrack && track.id === currentTrack.id) ? barBuffered : '0%'}"></div>
               <div class="waveform" :style="`-webkit-mask-box-image: url(${track.waveform_url})`"></div>
-                <!-- <div class="bar bar-buffered" :style="{}"></div>-->
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{ track.user.username }}</h5>

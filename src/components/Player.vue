@@ -2,7 +2,7 @@
     <div class="player fixed-bottom animated animatedFadeInUp fadeInUp" v-if="currentTrack">
         <div class="player-timeline">
             <div class="audio-timeline" @click="skipTimeline" >
-                <div class="bar bar-buffered" :style="{}"></div>
+                <div class="bar bar-buffered" :style="{ width: barBuffered }"></div>
                 <div class="bar bar-completed" :style="{ width: barCompleted }"></div>
             </div>
         </div>
@@ -125,7 +125,7 @@ export default {
           index: 0
         });
       }
-      this.volume = 1
+      this.reset()
       this.currentTime = "00:00";
       this.$store.dispatch("setBarCompleted", `0%`);
     },
@@ -163,16 +163,19 @@ export default {
       this.audio.volume = this.volume;
     },
 
-    setNextTrack() {},
+    reset() {
+      this.$store.dispatch("setBarBuffered", `0%`);
+    },
 
-    setPrevTrack() {},
     handleNext() {
+      this.reset();
       this.$store.dispatch("setCurrentTrack", {
         track: this.nextTrack,
         index: this.indexOfCurrentTrack + 1
       });
     },
     handlePrevious() {
+      this.reset()
       this.$store.dispatch("setCurrentTrack", {
         track: this.prevTrack,
         index: this.indexOfCurrentTrack - 1
@@ -182,6 +185,13 @@ export default {
     changeindexOfCurrentTrack() {
       this.$store.dispatch("setNextTrack");
       this.$store.dispatch("setPrevTrack");
+    },
+    onProgress() {
+      if (this.audio.buffered.length > 0) {
+        const percent =
+          (this.audio.buffered.end(0) / this.audio.duration) * 100 || 0;
+        this.$store.dispatch("setBarBuffered", `${percent}%`);
+      }
     }
   },
   watch: {
@@ -193,11 +203,11 @@ export default {
       this.changeindexOfCurrentTrack();
     },
 
-    volume(){
-      if(this.volume == 0){
-        this.isMuted = true
-      }else{
-        this.isMuted = false
+    volume() {
+      if (this.volume == 0) {
+        this.isMuted = true;
+      } else {
+        this.isMuted = false;
       }
     },
 
@@ -214,10 +224,12 @@ export default {
       this.audio.addEventListener("timeupdate", this.timeUpdate);
       this.audio.addEventListener("ended", this.ended);
       this.audio.addEventListener("volumechange", this.volumeChange);
+      this.audio.addEventListener("progress", this.onProgress);
 
       this.$store.dispatch("setBarCompleted", `0%`);
 
       this.isPlaying = true;
+      this.audio.volume = this.volume
       this.audio.play();
     }
   }
@@ -340,20 +352,19 @@ export default {
     }
   }
 
-  input[type=range]::-ms-track {
+  input[type="range"]::-ms-track {
     width: 300px;
     height: 5px;
-    
+
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
     background: transparent;
-    
+
     /*leave room for the larger thumb to overflow with a transparent border */
     border-color: transparent;
     border-width: 6px 0;
 
     /*remove default tick marks*/
     color: transparent;
-}
-
+  }
 }
 </style>

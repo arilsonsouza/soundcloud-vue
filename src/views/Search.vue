@@ -25,6 +25,7 @@ export default {
     }
   },
   destroyed() {
+     this.$store.dispatch("setBarBuffered", `0%`);
     this.$store.dispatch("clearTracks");
     this.$store.dispatch("setAudio", null);
     this.$store.dispatch("setCurrentTrack", {
