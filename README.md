@@ -1,21 +1,23 @@
 # soundcloud-vue
 
-> SoundCloud API client with Vue, Vue Router, Vuex
+> A basic SoundCloud API client built with Vue, Vuex, and Vue Router. Try the [live demo](https://soundcloudvue.herokuapp.com/)
+![screenshot](https://i.imgur.com/IqTrZXt.png)
 
-## Build Setup
+Stack
+- Vue
+- Vuex
+- Vue Router
+- Axios
+- Heroku
 
-``` bash
-# install dependencies
-npm install
+Quick Start
+-----------
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+```shell
+$ git clone https://github.com/arilsonsouza/soundcloud-vue.git
+$ cd soundcloud-vue
+$ npm install
+$ npm start
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
